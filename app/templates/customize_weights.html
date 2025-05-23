@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Customize Analysis Weights</title>
+    <style>
+        .customize-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .customize-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,97,255,0.08);
+            padding: 30px;
+            border: 1px solid rgba(96,239,255,0.1);
+        }
+        
+        .weight-group {
+            margin-bottom: 25px;
+        }
+        
+        .weight-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #0061ff;
+        }
+        
+        .weight-control {
+            display: flex;
+            align-items: center;
+        }
+        
+        .weight-slider {
+            flex: 1;
+        }
+        
+        .weight-value {
+            width: 50px;
+            text-align: center;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        
+        .weight-description {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .total-weight {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f7fbff;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid rgba(96,239,255,0.2);
+        }
+        
+        .total-warning {
+            color: #f44336;
+            display: none;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(90deg, #0061ff, #60efff);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(0,97,255,0.2);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,97,255,0.3);
+        }
+        
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #0061ff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .back-btn:hover {
+            transform: translateX(-3px);
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Customize Analysis Weights</h1>
+            <p>Adjust how different factors influence the resume analysis</p>
+        </div>
+    </header>
+
+    <main class="customize-container">
+        <a href="{{ url_for('main.index') }}" class="back-btn">← Back to Upload</a>
+        
+        <div class="customize-card">
+            <h2>Analysis Weight Configuration</h2>
+            <p>Adjust the sliders below to change how much each factor influences the final score. The total of all weights should equal 100%.</p>
+            
+            <form action="{{ url_for('main.customize_weights') }}" method="POST">
+                <div class="weight-group">
+                    <label for="weight_required">Required Skills Weight</label>
+                    <div class="weight-control">
+                        <input type="range" id="weight_required" name="weight_required" min="0.1" max="0.8" step="0.1" value="0.6" class="weight-slider">
+                        <span class="weight-value" id="required_value">60%</span>
+                    </div>
+                    <p class="weight-description">How important are the required skills mentioned in the job description?</p>
+                </div>
+                
+                <div class="weight-group">
+                    <label for="weight_preferred">Preferred Skills Weight</label>
+                    <div class="weight-control">
+                        <input type="range" id="weight_preferred" name="weight_preferred" min="0.1" max="0.8" step="0.1" value="0.2" class="weight-slider">
+                        <span class="weight-value" id="preferred_value">20%</span>
+                    </div>
+                    <p class="weight-description">How important are the preferred/nice-to-have skills?</p>
+                </div>
+                
+                <div class="weight-group">
+                    <label for="weight_similarity">Semantic Similarity Weight</label>
+                    <div class="weight-control">
+                        <input type="range" id="weight_similarity" name="weight_similarity" min="0.1" max="0.8" step="0.1" value="0.2" class="weight-slider">
+                        <span class="weight-value" id="similarity_value">20%</span>
+                    </div>
+                    <p class="weight-description">How important is the overall contextual match between resume and job description?</p>
+                </div>
+                
+                <div class="total-weight">
+                    <div>Total Weight: <span id="total_weight">100%</span></div>
+                    <div class="total-warning" id="warning_message">Warning: Total weight should equal 100%</div>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submit_btn">Save Configuration</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // Get DOM elements
+        const weightRequired = document.getElementById('weight_required');
+        const weightPreferred = document.getElementById('weight_preferred');
+        const weightSimilarity = document.getElementById('weight_similarity');
+        const requiredValue = document.getElementById('required_value');
+        const preferredValue = document.getElementById('preferred_value');
+        const similarityValue = document.getElementById('similarity_value');
+        const totalWeight = document.getElementById('total_weight');
+        const warningMessage = document.getElementById('warning_message');
+        const submitBtn = document.getElementById('submit_btn');
+        
+        // Update values when sliders change
+        function updateValues() {
+            // Update display values
+            requiredValue.textContent = `${Math.round(weightRequired.value * 100)}%`;
+            preferredValue.textContent = `${Math.round(weightPreferred.value * 100)}%`;
+            similarityValue.textContent = `${Math.round(weightSimilarity.value * 100)}%`;
+            
+            // Calculate total and check if valid
+            const total = parseFloat(weightRequired.value) + parseFloat(weightPreferred.value) + parseFloat(weightSimilarity.value);
+            totalWeight.textContent = `${Math.round(total * 100)}%`;
+            
+            // Show warning if total is not approximately 1
+            if (Math.abs(total - 1.0) > 0.05) {
+                warningMessage.style.display = 'block';
+                submitBtn.disabled = true;
+            } else {
+                warningMessage.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        }
+        
+        // Add event listeners
+        weightRequired.addEventListener('input', updateValues);
+        weightPreferred.addEventListener('input', updateValues);
+        weightSimilarity.addEventListener('input', updateValues);
+        
+        // Initialize values
+        updateValues();
+    </script>
+</body>
+
+</html> 

@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Resume Analysis Results</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #0061ff, #60efff);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.05)"/></svg>');
+            background-size: 100% 100%;
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-content h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .results-container {
+            max-width: 1200px;
+            margin: -40px auto 50px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .result-card {
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0,97,255,0.08);
+            margin-bottom: 30px;
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(96,239,255,0.1);
+        }
+        
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .result-header {
+            border-bottom: 1px solid #e0e6ed;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .result-header h2 {
+            color: #0061ff;
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+        
+        .result-rank {
+            background: linear-gradient(90deg, #0061ff, #60efff);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 3px 8px rgba(0,97,255,0.2);
+        }
+        
+        .result-score {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .score-item {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            flex: 1;
+            min-width: 180px;
+            text-align: center;
+            border: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+        
+        .score-item:hover {
+            background-color: #f0f8ff;
+            border-color: #60efff;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,97,255,0.1);
+        }
+        
+        .score-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #0061ff;
+            margin-bottom: 5px;
+        }
+        
+        .score-label {
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            margin: 20px 0 10px;
+            color: #0061ff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .section-content {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+        }
+        
+        .skill-category {
+            margin-bottom: 15px;
+        }
+        
+        .skill-category-name {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .skill-item {
+            background-color: #edf6ff;
+            border-radius: 18px;
+            padding: 6px 12px;
+            font-size: 14px;
+            color: #0061ff;
+            border: 1px solid #c6e2ff;
+            transition: all 0.2s ease;
+        }
+        
+        .skill-item:hover {
+            background-color: #d6ebff;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,97,255,0.1);
+        }
+        
+        .gap-list {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .gap-item {
+            display: inline-block;
+            border-radius: 18px;
+            padding: 6px 12px;
+            font-size: 14px;
+            margin-bottom: 5px;
+            transition: all 0.2s ease;
+        }
+        
+        .gap-item:hover {
+            transform: translateY(-2px);
+        }
+        
+        .gap-required {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+        
+        .gap-preferred {
+            background-color: #fff8e1;
+            color: #ff8f00;
+            border: 1px solid #ffe082;
+        }
+        
+        .visualization-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .visualization-item {
+            flex: 1;
+            min-width: 300px;
+            max-width: 100%;
+            text-align: center;
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .visualization-item h4 {
+            margin-bottom: 10px;
+            color: #2E7D32;
+        }
+        
+        .visualization-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .download-btn {
+            background-color: #2E7D32;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 25px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+        
+        .download-btn:hover {
+            background-color: #1B5E20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .back-btn {
+            background-color: white;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            margin-bottom: 25px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background-color: #f5f5f5;
+            border-color: #aaa;
+            transform: translateY(-2px);
+        }
+        
+        .resume-preview {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+            border: 1px solid #eee;
+            max-height: 150px;
+            overflow-y: auto;
+            white-space: pre-line;
+        }
+        
+        .tab-container {
+            margin-top: 20px;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab-button {
+            padding: 10px 15px;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-button.active {
+            color: #2E7D32;
+            border-bottom-color: #2E7D32;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .metric-indicator {
+            height: 8px;
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .metric-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease-in-out;
+        }
+        
+        .metric-total {
+            background-color: #2E7D32;
+        }
+        
+        .metric-required {
+            background-color: #1565C0;
+        }
+        
+        .metric-preferred {
+            background-color: #FFA000;
+        }
+        
+        .metric-similarity {
+            background-color: #7B1FA2;
+        }
+        
+        @media (max-width: 768px) {
+            .result-score {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .score-item {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Resume Analysis Results</h1>
+            <p>Detailed ranking and insights from your resume matching</p>
+        </div>
+    </header>
+
+    <main class="results-container">
+        <a href="{{ url_for('main.index') }}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Upload
+        </a>
+
+        <div id="resultsContent">
+            {% for result in results %}
+            <div class="result-card">
+                <div class="result-header">
+                    <h2><i class="fas fa-file-pdf"></i> {{ result.file_name }}</h2>
+                    <div class="result-rank">
+                        <i class="fas fa-trophy"></i> Rank #{{ loop.index }}
+                    </div>
+                </div>
+
+                <!-- Score Summary -->
+                <div class="result-score">
+                    <div class="score-item">
+                        <div class="score-value">{{ "%.1f"|format(result.total_score) }}%</div>
+                        <div class="score-label">Total Match Score</div>
+                        <div class="metric-indicator">
+                            <div class="metric-fill metric-total" style="width: {{ result.total_score }}%;"></div>
+                        </div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-value">{{ "%.1f"|format(result.required_skills_score) }}%</div>
+                        <div class="score-label">Required Skills</div>
+                        <div class="metric-indicator">
+                            <div class="metric-fill metric-required" style="width: {{ result.required_skills_score }}%;"></div>
+                        </div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-value">{{ "%.1f"|format(result.preferred_skills_score) }}%</div>
+                        <div class="score-label">Preferred Skills</div>
+                        <div class="metric-indicator">
+                            <div class="metric-fill metric-preferred" style="width: {{ result.preferred_skills_score }}%;"></div>
+                        </div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-value">{{ "%.1f"|format(result.semantic_similarity) }}%</div>
+                        <div class="score-label">Semantic Similarity</div>
+                        <div class="metric-indicator">
+                            <div class="metric-fill metric-similarity" style="width: {{ result.semantic_similarity }}%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="tab-container">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" data-tab="skills-{{ loop.index }}">
+                            <i class="fas fa-lightbulb"></i> Skills
+                        </button>
+                        <button class="tab-button" data-tab="education-{{ loop.index }}">
+                            <i class="fas fa-graduation-cap"></i> Education
+                        </button>
+                        <button class="tab-button" data-tab="experience-{{ loop.index }}">
+                            <i class="fas fa-briefcase"></i> Experience
+                        </button>
+                        <button class="tab-button" data-tab="preview-{{ loop.index }}">
+                            <i class="fas fa-eye"></i> Preview
+                        </button>
+                    </div>
+
+                    <!-- Skills Tab -->
+                    <div id="skills-{{ loop.index }}" class="tab-content active">
+                        <div class="section-title">
+                            <i class="fas fa-check-circle"></i> Matched Skills
+                        </div>
+                        <div class="section-content">
+                            {% for category, skills in result.skills.items() %}
+                            <div class="skill-category">
+                                <div class="skill-category-name">
+                                    {% if category == 'programming' %}
+                                    <i class="fas fa-code"></i>
+                                    {% elif category == 'web' %}
+                                    <i class="fas fa-globe"></i>
+                                    {% elif category == 'database' %}
+                                    <i class="fas fa-database"></i>
+                                    {% elif category == 'cloud' %}
+                                    <i class="fas fa-cloud"></i>
+                                    {% elif category == 'data_science' %}
+                                    <i class="fas fa-chart-line"></i>
+                                    {% elif category == 'soft_skills' %}
+                                    <i class="fas fa-users"></i>
+                                    {% else %}
+                                    <i class="fas fa-cogs"></i>
+                                    {% endif %}
+                                    {{ category|replace('_', ' ')|title }}
+                                </div>
+                                <div class="skill-list">
+                                    {% for skill in skills %}
+                                    <span class="skill-item">{{ skill }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="section-title">
+                            <i class="fas fa-exclamation-triangle"></i> Skill Gaps
+                        </div>
+                        <div class="section-content">
+                            <div>
+                                <strong><i class="fas fa-exclamation-circle"></i> Required Skills Missing:</strong>
+                                <div class="gap-list">
+                                    {% if result.skill_gaps.required %}
+                                    {% for skill in result.skill_gaps.required %}
+                                    <span class="gap-item gap-required">{{ skill }}</span>
+                                    {% endfor %}
+                                    {% else %}
+                                    <span>None - All required skills matched!</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div style="margin-top: 15px;">
+                                <strong><i class="fas fa-star"></i> Preferred Skills Missing:</strong>
+                                <div class="gap-list">
+                                    {% if result.skill_gaps.preferred %}
+                                    {% for skill in result.skill_gaps.preferred %}
+                                    <span class="gap-item gap-preferred">{{ skill }}</span>
+                                    {% endfor %}
+                                    {% else %}
+                                    <span>None - All preferred skills matched!</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Education Tab -->
+                    <div id="education-{{ loop.index }}" class="tab-content">
+                        <div class="section-title">
+                            <i class="fas fa-graduation-cap"></i> Education Details
+                        </div>
+                        <div class="section-content">
+                            {% if result.education %}
+                            <ul style="list-style-type: none; padding-left: 0;">
+                                {% for edu in result.education %}
+                                <li style="margin-bottom: 10px; padding-left: 20px; border-left: 3px solid #2E7D32;">{{ edu }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% else %}
+                            <p>No education details extracted.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Experience Tab -->
+                    <div id="experience-{{ loop.index }}" class="tab-content">
+                        <div class="section-title">
+                            <i class="fas fa-briefcase"></i> Work Experience
+                        </div>
+                        <div class="section-content">
+                            {% if result.experience %}
+                            <div style="display: flex; flex-direction: column; gap: 15px;">
+                                {% for exp in result.experience %}
+                                <div style="padding: 15px; background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                    {% if exp.title %}
+                                    <div style="font-weight: bold; color: #2E7D32;">{{ exp.title }}</div>
+                                    {% endif %}
+                                    
+                                    {% if exp.company %}
+                                    <div style="color: #555;">{{ exp.company }}</div>
+                                    {% endif %}
+                                    
+                                    {% if exp.duration %}
+                                    <div style="font-size: 0.9em; color: #777; margin-bottom: 10px;">{{ exp.duration }}</div>
+                                    {% endif %}
+                                    
+                                    {% if exp.description %}
+                                    <div style="font-size: 0.95em; color: #444;">
+                                        {% for line in exp.description %}
+                                        <p style="margin-bottom: 5px;">{{ line }}</p>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <p>No work experience details extracted.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Preview Tab -->
+                    <div id="preview-{{ loop.index }}" class="tab-content">
+                        <div class="section-title">
+                            <i class="fas fa-file-alt"></i> Resume Preview
+                        </div>
+                        <div class="resume-preview">
+                            {{ result.resume_preview }}...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visualizations Section -->
+                {% if visualizations|length > 0 %}
+                <div class="visualization-section">
+                    {% for viz in visualizations %}
+                    {% if viz.file_name == result.file_name %}
+                    {% if viz.skill_match %}
+                    <div class="visualization-item">
+                        <h4><i class="fas fa-chart-radar"></i> Skill Categories</h4>
+                        <img src="data:image/png;base64,{{ viz.skill_match }}" alt="Skill Match Chart">
+                    </div>
+                    {% endif %}
+                    
+                    {% if viz.skill_gaps %}
+                    <div class="visualization-item">
+                        <h4><i class="fas fa-chart-bar"></i> Skill Gaps</h4>
+                        <img src="data:image/png;base64,{{ viz.skill_gaps }}" alt="Skill Gaps Chart">
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab Navigation
+            const tabButtons = document.querySelectorAll('.tab-button');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Get the target tab
+                    const tab = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all buttons and content in this tab group
+                    const tabGroup = this.parentElement;
+                    const tabContainer = tabGroup.parentElement;
+                    
+                    tabGroup.querySelectorAll('.tab-button').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    tabContainer.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Add active class to this button and content
+                    this.classList.add('active');
+                    document.getElementById(tab).classList.add('active');
+                });
+            });
+            
+            // Animate the score metrics on page load
+            setTimeout(() => {
+                document.querySelectorAll('.metric-fill').forEach(fill => {
+                    const width = fill.style.width;
+                    fill.style.width = '0%';
+                    
+                    setTimeout(() => {
+                        fill.style.width = width;
+                    }, 100);
+                });
+            }, 300);
+        });
+    </script>
+</body>
+
+</html>

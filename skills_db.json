@@ -1,0 +1,25 @@
+{
+    "skills": [
+        "python", "java", "javascript", "typescript", "c++", "c#", "ruby", "php", "swift", "kotlin", 
+        "sql", "nosql", "mysql", "postgresql", "mongodb", "oracle", "sqlite", "firebase", "redis",
+        "html", "css", "react", "angular", "vue", "svelte", "jquery", "bootstrap", "tailwind", 
+        "node.js", "express", "django", "flask", "spring", "laravel", "asp.net", 
+        "aws", "azure", "gcp", "cloud", "docker", "kubernetes", "terraform", "jenkins", "ci/cd", "git",
+        "machine learning", "deep learning", "nlp", "computer vision", "data analysis", "data science",
+        "tensorflow", "pytorch", "scikit-learn", "pandas", "numpy", "r", "matlab",
+        "agile", "scrum", "kanban", "jira", "project management", "product management",
+        "ui/ux", "figma", "sketch", "adobe xd", "photoshop", "illustrator",
+        "communication", "teamwork", "leadership", "problem solving", "critical thinking", 
+        "time management", "creativity", "adaptability", "attention to detail", 
+        "analytics", "statistics", "mathematics", "algorithms", "data structures", 
+        "system design", "microservices", "rest api", "graphql", "oauth", "jwt", 
+        "testing", "junit", "jest", "selenium", "cypress", "qa", "tdd", "bdd",
+        "devops", "sre", "linux", "unix", "bash", "powershell", "networking", "security",
+        "blockchain", "ethereum", "solidity", "web3", "cryptocurrency",
+        "mobile development", "android", "ios", "react native", "flutter", "xamarin",
+        "embedded systems", "iot", "raspberry pi", "arduino", "robotics",
+        "game development", "unity", "unreal engine", "3d modeling", "animation",
+        "erp", "crm", "salesforce", "sap", "oracle ebs", "microsoft dynamics",
+        "wordpress", "drupal", "shopify", "woocommerce", "magento", "cms"
+    ]
+}

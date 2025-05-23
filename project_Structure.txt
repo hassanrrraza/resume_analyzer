@@ -1,0 +1,25 @@
+smart_resume_analyzer/
+│
+├── app/
+│   ├── __init__.py         # Initializes the Flask app
+│   ├── routes.py           # Defines application routes
+│   ├── utils.py            # Helper functions (e.g., text extraction, NLP processing)
+│   ├── static/
+│   │   ├── css/
+│   │   │   └── style.css   # CSS for UI styling
+│   │   └── js/
+│   │       └── script.js   # Optional JavaScript for interactivity
+│   ├── templates/
+│   │   ├── index.html      # Home page for uploading resumes
+│   │   ├── results.html    # Displays analysis results
+│   └── uploads/            # Stores uploaded resumes temporarily
+│
+├── models/                 # NLP models or pre-trained embeddings (if required)
+│
+├── tests/                  # Unit tests for the application
+│   └── test_app.py         # Tests for routes and utilities
+│
+├── requirements.txt        # Python dependencies
+├── config.py               # Configuration file for Flask and other settings
+├── main.py                 # Entry point for the Flask application
+└── README.md               # Project description and instructions
