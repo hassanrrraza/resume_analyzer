@@ -1,75 +1,105 @@
-# Smart Resume Analyzer
-
+# Smart Resume Analyzer 📄✨
 
 <p align="center">
-  <a href="#key-features">Key Features</a> •
-  <a href="#technology-stack">Technology Stack</a> •
-  <a href="#architecture">Architecture</a> •
-  <a href="#installation">Installation</a> •
-  <a href="#usage">Usage</a> •
-  <a href="#screenshots">Screenshots</a> •
-  <a href="#future-roadmap">Future Roadmap</a>
+  <img src="https://img.shields.io/badge/Python-3.8+-blue.svg" alt="Python Version"/>
+  <img src="https://img.shields.io/badge/Flask-2.0+-green.svg" alt="Flask Version"/>
+  <img src="https://img.shields.io/badge/NLP-spaCy%20%7C%20NLTK-yellow.svg" alt="NLP Libraries"/>
+  <img src="https://img.shields.io/badge/License-MIT-red.svg" alt="License"/>
 </p>
 
 <p align="center">
-  <img src="app/static/img/demo.png" alt="Demo" width="600">
+  <b>Streamlining recruitment through intelligent resume analysis</b>
 </p>
 
-## Overview
+![Demo Banner](https://raw.githubusercontent.com/hassanrrraza/resume_analyzer/main/app/static/img/demo.png)
+
+## 📋 Table of Contents
+
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Technology Stack](#technology-stack)
+- [Architecture](#architecture)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Screenshots](#screenshots)
+- [Future Roadmap](#future-roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
+
+## 🔍 Overview
 
 Smart Resume Analyzer is an intelligent web application that leverages Natural Language Processing (NLP) to automate the resume screening process. By analyzing resumes against job descriptions, the system provides objective, data-driven insights to help recruiters identify the most suitable candidates efficiently.
 
-## Key Features
+## ✨ Key Features
 
-✨ **Intelligent Resume Parsing**
+### Intelligent Resume Parsing
 - Extracts and categorizes information from PDF resumes
 - Identifies education, experience, and skills automatically
 - Processes multiple resumes simultaneously
 
-🔍 **Advanced Matching Algorithm**
+### Advanced Matching Algorithm
 - Matches resumes against job requirements using weighted criteria
 - Distinguishes between required and preferred skills
 - Employs semantic similarity for context-aware matching
 
-📊 **Interactive Visualizations**
+### Interactive Visualizations
 - Skill category radar charts
 - Color-coded skill gap analysis
 - Progress indicators for match scores
 
-⚖️ **Customizable Analysis**
+### Customizable Analysis
 - Adjustable weights for different matching criteria
 - Interactive sliders for personalized assessment
 
-📋 **Comprehensive Reporting**
+### Comprehensive Reporting
 - Downloadable PDF reports
 - Detailed candidate information and match scores
 - Visual representations of strengths and skill gaps
 
-## Technology Stack
+## 🛠️ Technology Stack
 
-### Frontend
-- HTML5, CSS3, JavaScript
-- Responsive design with custom styling
-- Interactive elements for file uploads and parameter adjustment
+<table>
+  <tr>
+    <td><b>Frontend</b></td>
+    <td>
+      • HTML5, CSS3, JavaScript<br>
+      • Responsive design with custom styling<br>
+      • Interactive elements for file uploads and parameter adjustment
+    </td>
+  </tr>
+  <tr>
+    <td><b>Backend</b></td>
+    <td>
+      • Python 3.8+<br>
+      • Flask web framework<br>
+      • RESTful API endpoints
+    </td>
+  </tr>
+  <tr>
+    <td><b>NLP & Data Processing</b></td>
+    <td>
+      • NLTK for tokenization and lemmatization<br>
+      • spaCy for entity recognition and semantic analysis<br>
+      • PyPDF2 for document parsing
+    </td>
+  </tr>
+  <tr>
+    <td><b>Data Visualization</b></td>
+    <td>
+      • Matplotlib for chart generation<br>
+      • Base64 encoding for web display
+    </td>
+  </tr>
+  <tr>
+    <td><b>Reporting</b></td>
+    <td>
+      • FPDF for PDF generation
+    </td>
+  </tr>
+</table>
 
-### Backend
-- Python 3.8+
-- Flask web framework
-- RESTful API endpoints
-
-### NLP & Data Processing
-- NLTK for tokenization and lemmatization
-- spaCy for entity recognition and semantic analysis
-- PyPDF2 for document parsing
-
-### Data Visualization
-- Matplotlib for chart generation
-- Base64 encoding for web display
-
-### Reporting
-- FPDF for PDF generation
-
-## Architecture
+## 🏗️ Architecture
 
 Smart Resume Analyzer implements a modular architecture:
 
@@ -102,7 +132,7 @@ Smart Resume Analyzer implements a modular architecture:
 +----------+----------+
 ```
 
-## Installation
+## ⚙️ Installation
 
 ### Prerequisites
 - Python 3.8 or higher
@@ -114,7 +144,7 @@ Smart Resume Analyzer implements a modular architecture:
 1. Clone the repository:
    ```bash
    git clone https://github.com/hassanrrraza/resume_analyzer
-   cd resume-analyzer
+   cd resume_analyzer
    ```
 
 2. Create and activate a virtual environment:
@@ -146,7 +176,7 @@ Smart Resume Analyzer implements a modular architecture:
 
 6. Access the application at `http://localhost:5000`
 
-## Usage
+## 🚀 Usage
 
 ### Resume Analysis Process
 
@@ -174,24 +204,33 @@ Smart Resume Analyzer implements a modular architecture:
    - Generate comprehensive PDF summary
    - Share with team members or stakeholders
 
-## Screenshots
+## 📸 Screenshots
 
+<details open>
+<summary><b>Resume Upload Interface</b></summary>
+<br>
 <p align="center">
-  <img src="app/static/img/upload.png" alt="Upload Interface" width="400"/>
-  <br><em>Resume Upload Interface</em>
+  <img src="https://raw.githubusercontent.com/hassanrrraza/resume_analyzer/main/app/static/img/upload.png" alt="Upload Interface" width="700"/>
 </p>
+</details>
 
+<details>
+<summary><b>Results Dashboard</b></summary>
+<br>
 <p align="center">
-  <img src="app/static/img/results.png" alt="Results Dashboard" width="400"/>
-  <br><em>Results Dashboard</em>
+  <img src="https://raw.githubusercontent.com/hassanrrraza/resume_analyzer/main/app/static/img/results.png" alt="Results Dashboard" width="700"/>
 </p>
+</details>
 
+<details>
+<summary><b>Skill Analysis Visualization</b></summary>
+<br>
 <p align="center">
-  <img src="app/static/img/visualization.png" alt="Skill Visualization" width="400"/>
-  <br><em>Skill Analysis Visualization</em>
+  <img src="https://raw.githubusercontent.com/hassanrrraza/resume_analyzer/main/app/static/img/visualization.png" alt="Skill Visualization" width="700"/>
 </p>
+</details>
 
-## Future Roadmap
+## 🔮 Future Roadmap
 
 ### Near-term Enhancements
 - Support for DOCX and other resume formats
@@ -204,7 +243,7 @@ Smart Resume Analyzer implements a modular architecture:
 - Mobile application development
 - Multi-language support
 
-## Contributing
+## 👥 Contributing
 
 Contributions are welcome! Please follow these steps:
 
@@ -216,11 +255,11 @@ Contributions are welcome! Please follow these steps:
 
 Please ensure your code follows the project's style guidelines and includes appropriate tests.
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
 - NLTK team for natural language processing tools
 - spaCy for advanced NLP capabilities
@@ -230,6 +269,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <p align="center">
-  <a href="https://github.com/yourusername">GitHub</a> •
-  <a href="mailto:your.email@example.com">Contact</a>
+  <a href="https://github.com/hassanrrraza">GitHub</a> •
+  <a href="mailto:hassan2056764@gmail.com">Contact</a>
 </p>
