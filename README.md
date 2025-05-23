@@ -1,10 +1,5 @@
 # Smart Resume Analyzer
 
-<p align="center">
-  <img src="images/logo.png" alt="Smart Resume Analyzer Logo" width="200"/>
-  <br>
-  <em>Streamlining recruitment through intelligent resume analysis</em>
-</p>
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
@@ -17,7 +12,7 @@
 </p>
 
 <p align="center">
-  <img src="images/demo.png" alt="Demo" width="600">
+  <img src="app/static/img/demo.png" alt="Demo" width="600">
 </p>
 
 ## Overview
@@ -118,8 +113,8 @@ Smart Resume Analyzer implements a modular architecture:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/smart-resume-analyzer.git
-   cd smart-resume-analyzer
+   git clone https://github.com/hassanrrraza/resume_analyzer
+   cd resume-analyzer
    ```
 
 2. Create and activate a virtual environment:
@@ -182,17 +177,17 @@ Smart Resume Analyzer implements a modular architecture:
 ## Screenshots
 
 <p align="center">
-  <img src="images/upload.png" alt="Upload Interface" width="400"/>
+  <img src="app/static/img/upload.png" alt="Upload Interface" width="400"/>
   <br><em>Resume Upload Interface</em>
 </p>
 
 <p align="center">
-  <img src="images/results.png" alt="Results Dashboard" width="400"/>
+  <img src="app/static/img/results.png" alt="Results Dashboard" width="400"/>
   <br><em>Results Dashboard</em>
 </p>
 
 <p align="center">
-  <img src="images/visualization.png" alt="Skill Visualization" width="400"/>
+  <img src="app/static/img/visualization.png" alt="Skill Visualization" width="400"/>
   <br><em>Skill Analysis Visualization</em>
 </p>
 
